@@ -15,7 +15,7 @@ MongoClient.connect('mongodb://localhost/CustomerApp', (err, client) => {
     //         firstName: 'Tim'
     //     }
     // }, {
-    //     returnOriginal: 'Tim'
+    //     returnOriginal: false
     // }).then((result) => {
     //     console.log(result);
     // }); 

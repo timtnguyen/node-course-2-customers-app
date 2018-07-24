@@ -34,9 +34,9 @@ MongoClient.connect('mongodb://localhost/CustomerApp', (err, client) => {
 
     //     console.log(JSON.stringify(result.ops[0]._id.getTimestamp(), undefined, 2)); 
     // });
-
     client.close(); 
 });
+
 
 
 
