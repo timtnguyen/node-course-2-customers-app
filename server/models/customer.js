@@ -15,12 +15,10 @@ let Customer = mongoose.model('Customer', {
     },
     completed: {
         type: Boolean, 
-        required: true, 
         default: false 
     },
     completedAt: {
         type: Number, 
-        required: true,
         minLength: true,
         default: null  
     }
