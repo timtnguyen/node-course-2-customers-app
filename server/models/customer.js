@@ -9,7 +9,8 @@ let Customer = mongoose.model('Customer', {
     },
     lastName: {
         type: String,
-        required: true, 
+        lastName: 'Tran',
+        //required: true, 
         minLength: true,
         trim: true   
     },
@@ -26,7 +27,6 @@ let Customer = mongoose.model('Customer', {
 
 // let newCustomer = new Customer({
 //     firstName: 'John',
-//     lastName: 'Tran',
 //     completed: true,
 //     completedAt: 123 
 // });
