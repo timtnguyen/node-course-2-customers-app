@@ -26,6 +26,15 @@ app.post('/customers', (req, res) => {
     });
 });
 
+// GET route 
+app.get('/customers', (req, res) => {
+    Customer.find().then((customers) => {
+        res.send({customers}); 
+    }, (err) => {
+        res.status(400).send(err); 
+    });
+});
+
 app.listen(3000, () => {
     console.log('Started on port 3000'); 
 });
