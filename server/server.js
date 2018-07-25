@@ -55,7 +55,7 @@ app.get('/customers/:id', (req, res) => {
     }); 
 }); 
 
-app.listen(3000, () => {
+app.listen(port, () => {
     console.log(`Started up at port ${port}`); 
 });
 
