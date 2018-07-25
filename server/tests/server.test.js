@@ -1,12 +1,15 @@
 const expect = require('expect');
 const request = require('supertest'); 
+const { ObjectID } = require('mongodb'); 
 
 const {app} = require('./../server'); 
 const {Customer} = require('./../models/customer'); 
 
 const customers = [{
+    _id: new ObjectID(),
     firstName: 'Tim'
 }, {
+    _id: new ObjectID(), 
     firstName: 'Kha'
 }];
 
@@ -68,5 +71,33 @@ describe('GET /customers', () => {
                 expect(res.body.customers.length).toBe(2); 
             })
             .end(done); 
+    });
+});
+
+describe('GET /customers/:id', () => {
+    it('should return customer doc', (done) => {
+        request(app)
+            .get(`/customers/${customers[0]._id.toHexString()}`)
+            .expect(200)
+            .expect((res) => {
+                expect(res.body.customer.firstName).toBe(customers[0].firstName);
+            })
+            .end(done); 
+    });
+
+    it('should return 404 if customer not found', (done) => {
+        let id = new ObjectID(); 
+        
+        request(app)
+            .get(`/customers/${id.toHexString()}`)
+            .expect(404)
+            .end(done);         
+    });
+
+    it('should return 404 for non-object ids', (done) => {
+        request(app)
+            .get('/customer/123')
+            .expect(404)
+            .end(done);
     });
 });
