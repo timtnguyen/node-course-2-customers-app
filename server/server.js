@@ -7,6 +7,7 @@ const { Customer } = require('./models/customer');
 const { User } = require('./models/user'); 
 
 var app = express(); 
+const port = process.env.PORT || 3000; 
 
 // Middleware to convert json into object 
 app.use(bodyParser.json()); 
@@ -55,7 +56,7 @@ app.get('/customers/:id', (req, res) => {
 }); 
 
 app.listen(3000, () => {
-    console.log('Started on port 3000'); 
+    console.log(`Started up at port ${port}`); 
 });
 
 
