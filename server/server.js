@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser'); 
+const { ObjectID } = require('mongodb'); 
 
 const { mongoose } = require('./db/mongoose');
 const { Customer } = require('./models/customer');
@@ -34,6 +35,24 @@ app.get('/customers', (req, res) => {
         res.status(400).send(err); 
     });
 });
+
+// GET /customers/:id 
+app.get('/customers/:id', (req, res) => {
+    let id = req.params.id;
+    if (!ObjectID.isValid(id)) {
+        res.status(404).send(); 
+    }
+
+    Customer.findById(id).then((customer) => {
+        if (!customer) {
+            res.status(404).send(); 
+        }
+
+        res.send({customer}); 
+    }).catch((err) => {
+        res.status(400).send(); 
+    }); 
+}); 
 
 app.listen(3000, () => {
     console.log('Started on port 3000'); 
