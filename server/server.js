@@ -1,3 +1,4 @@
+const _ = require('lodash'); 
 const express = require('express');
 const bodyParser = require('body-parser'); 
 const { ObjectID } = require('mongodb'); 
@@ -68,6 +69,33 @@ app.delete('/customers/:id', (req, res) => {
         }
 
         res.status(200).send({customer});
+    }).catch((err) => {
+        res.status(400).send(); 
+    });
+});
+
+app.patch('/customers/:id', (req, res) => {
+    let id = req.params.id; 
+    // Using lodash 
+    let body = _.pick(req.body, ['completed', 'completedAt']);
+
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send(); 
+    }
+
+    if (_.isBoolean(body.completed) && body.completed) {
+        body.completedAt = new Date().getTime(); 
+    } else {
+        body.completed = false;
+        body.completedAt = null; 
+    }
+
+    Customer.findByIdAndUpdate(id, {$set: body}, {new: true}).then((customer) => {
+        if (!customer) {
+            return res.status(404).send(); 
+        }
+
+        res.send({customer}); 
     }).catch((err) => {
         res.status(400).send(); 
     });
