@@ -101,3 +101,28 @@ describe('GET /customers/:id', () => {
             .end(done);
     });
 });
+
+
+describe('DELETE /customers/:id', () => {
+    it('should remove a customer', (done) => {
+        let hexId = customers[1]._id.toHexString(); 
+
+        request(app)
+            .delete(`/customers/${hexId}`)
+            .expect(200)
+            .expect((res) => {
+                console.log(res.body); 
+                expect(res.body.customer._id).toBe(hexId);
+            })
+            .end((err, res) => {
+                if (err) {
+                    return done(err); 
+                }
+
+                Customer.findById(hexId).then((customer) => {
+                    expect(customer).toBeFalsy();
+                    done();
+                }).catch((err) => done(err)); 
+            });
+    });
+});
