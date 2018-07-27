@@ -10,7 +10,9 @@ const customers = [{
     firstName: 'Tim'
 }, {
     _id: new ObjectID(), 
-    firstName: 'Kha'
+    firstName: 'Kha',
+    completed: true,
+    completedAt: 333
 }];
 
 beforeEach((done) => {
@@ -126,3 +128,19 @@ describe('DELETE /customers/:id', () => {
             });
     });
 });
+
+describe('PATCH /customers/:id', () => {
+    it('it should update the todo', (done) => {
+        let id = customers[1]._id.toHexString(); 
+    
+        request(app)
+            .patch(`/customers/${id}`)
+            .send({completed: false})
+            .expect(200)
+            .expect((res) => {
+                expect(res.body.customer.completed).toBe(false);
+            })
+            .end(done); 
+    });
+});
+
