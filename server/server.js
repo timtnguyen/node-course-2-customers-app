@@ -1,13 +1,4 @@
-let env = process.env.NODE_ENV || 'development'; 
-console.log('env *****', env); 
-
-if (env === 'development') {
-    process.env.PORT = 3000; 
-    process.env.MONGODB_URI = 'mongodb://localhost:27017/CustomerApp';
-} else if (env === 'test') {
-    process.env.PORT = 3000; 
-    process.env.MONGODB_URI = 'mongodb://localhost:27017/CustomerAppTest'; 
-}
+require('./config/config'); 
 
 const _ = require('lodash'); 
 const express = require('express');
@@ -110,6 +101,20 @@ app.patch('/customers/:id', (req, res) => {
     }).catch((err) => {
         res.status(400).send(); 
     });
+});
+
+// POST /users 
+app.post('/users', (req, res) => {
+    let body = _.pick(req.body, ['email', 'password']); 
+    let user = new User(body);
+
+    user.save().then(() => {
+        return user.generateAuthToken(); 
+    }).then((token) => {
+        res.header('x-auth', token).send(user); 
+    }).catch((err) => {
+        res.status(400).send(err); 
+    })
 });
 
 app.listen(port, () => {
